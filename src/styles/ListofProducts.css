@@ -1,0 +1,14 @@
+/* ProductList.css */
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .product-card {
+    width: calc(25% - 20px); /* Adjust width and margin as needed */
+    margin: 10px;
+    /* Other styles */
+  }

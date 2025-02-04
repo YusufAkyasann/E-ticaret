@@ -1,0 +1,123 @@
+/* HomePage.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Product Cards */
+  .product-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .product-card h3 {
+    margin: 10px 0;
+    font-size: 20px;
+  }
+  
+  .product-card p {
+    font-size: 18px;
+    color: #4CAF50; /* Green */
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    margin: 20px;
+    width: 80%;
+  }
+  
+  .search-bar input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Cart Component */
+  .cart-component {
+    position: fixed;
+    right: 20px; /* Changed from left to right */
+    top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 900;
+  }
+  
+  .cart-component span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .cart-component button {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #2c3e50; /* Darker background */
+    border: 2px solid #fff; /* White border */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1.5rem; /* Larger icon */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add shadow for depth */
+  }
+  
+  .cart-component button:hover {
+    background-color: #34495e;
+    transform: scale(1.05);
+  }
+  
+  /* Quantity Adjustment Buttons */
+  .quantity-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .quantity-buttons button {
+    background-color: #f2f2f2;
+    border: none;
+    color: #333;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .quantity-buttons button:hover {
+    background-color: #ddd;
+  }
+
+  .home-container {
+    margin-left: 60px; /* Reduced from 150px to 60px */
+    padding: 1rem;
+    width: calc(100% - 60px); /* Adjust width based on new margin */
+    box-sizing: border-box;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px; /* Reduced from 40px */
+    margin-top: 20px;
+    font-weight: bold;
+  }
