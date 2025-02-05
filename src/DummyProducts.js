@@ -15,7 +15,7 @@ export const dummyProducts = [
   },
   {
     id: 3,
-    name: "Denim Jacket",
+    name: "Denim Pants",
     price: 79.99,
     category: "Clothing",
     image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500"

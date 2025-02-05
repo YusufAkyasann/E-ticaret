@@ -4,6 +4,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
   }
   
   /* Product Cards */
@@ -36,16 +37,6 @@ body {
   .search-bar {
     margin: 20px;
     width: 80%;
-  }
-  
-  .search-bar input[type="text"] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
   }
   
   /* Cart Component */
@@ -107,10 +98,25 @@ body {
   }
 
   .home-container {
-    margin-left: 60px; /* Reduced from 150px to 60px */
+    margin-left: 60px;
     padding: 1rem;
-    width: calc(100% - 60px); /* Adjust width based on new margin */
+    width: calc(100% - 60px);
     box-sizing: border-box;
+    margin-top: 180px; /* Space for fixed header */
+  }
+
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    z-index: 1000;
+  }
+
+  .scrollable-content {
+    margin-top: 300px; /* Adjust this value based on the total height of header + search + categories */
+    padding: 1rem;
   }
 
   .main-title {

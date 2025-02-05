@@ -1,0 +1,13 @@
+.page-container {
+  margin-top: 180px;
+  padding: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-container h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+} 

@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CategoriesDrawer from '../components/CategoriesDrawer';
-import CartComponent from '../components/CartComponent';
+import Header from '../components/Header';
+import CategoryButtons from '../components/CategoryButtons';
 import SearchBar from '../components/SearchBar';
 import { dummyProducts } from '../DummyProducts';
 import ListofProducts from '../components/ListofProducts';
 import './HomePage.css';
 
-
-function HomePage() {
+function HomePage({ cartItems, setCartItems }) {
   const navigate = useNavigate();
   const categories = ['Electronics', 'Clothing', 'Accessories'];
   const products = dummyProducts;
   const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
-  // Load cart items from localStorage on initial render
-  const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem('cartItems');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-  // Save cart items to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
 
   // Filter products based on category and search term
   useEffect(() => {
@@ -74,11 +63,14 @@ function HomePage() {
 
   return (
     <div>
-      <h1 className="main-title">E-Ticaret Websitesi</h1>
+      <Header cartItems={cartItems} onCartClick={handleCartClick} />
       <div className="home-container">
-        <CategoriesDrawer categories={categories} onCategorySelect={handleCategorySelect} />
         <SearchBar onSearch={handleSearch} />
-        <CartComponent cartItems={cartItems} onCartClick={handleCartClick} />
+        <CategoryButtons 
+          categories={categories} 
+          selectedCategory={selectedCategory}
+          onCategorySelect={handleCategorySelect} 
+        />
         <ListofProducts 
           products={filteredProducts} 
           onQuantityChange={handleQuantityChange}
