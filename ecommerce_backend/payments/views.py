@@ -1,147 +1,63 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.generic import View
+from .models import Order, OrderItem
 
-# Create your views here.
-import paypalrestsdk
-from django.conf import settings
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-import stripe
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-import json
-import traceback
-
-paypalrestsdk.configure({
-    "mode": settings.PAYPAL_MODE,
-    "client_id": settings.PAYPAL_CLIENT_ID,
-    "client_secret": settings.PAYPAL_CLIENT_SECRET,
-})
-
-# Configure Stripe with your secret key
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-@csrf_exempt
-@api_view(['POST'])
-def stripe_payment(request):
-    print("\n=== New Stripe Request ===")
-    print(f"Request Method: {request.method}")
-    print(f"Request Body: {request.body.decode('utf-8')}")
+class PaymentView(View):
+    template_name = 'src/templates/payment.html'
     
-    try:
-        amount = request.data.get('amount')
-        currency = request.data.get('currency', 'USD')
+    def get(self, request, *args, **kwargs):
+        # Aktif sepeti al
+        cart = request.user.cart
+        cart_items = cart.items.all()
         
-        if not amount:
-            return Response({
-                'error': 'Amount is required',
-                'received_data': request.data
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-        # Create Stripe Checkout Session
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': currency,
-                    'unit_amount': int(float(amount) * 100),  # Convert to cents
-                    'product_data': {
-                        'name': 'Payment',
-                    },
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url='http://localhost:3000/success',
-            cancel_url='http://localhost:3000/cancel',
+        # Sipariş özetini hesapla
+        subtotal = sum(item.get_total_price() for item in cart_items)
+        shipping_cost = 29.99  # Sabit kargo ücreti
+        total = subtotal + shipping_cost
+        
+        context = {
+            'cart_items': cart_items,
+            'subtotal': subtotal,
+            'shipping_cost': shipping_cost,
+            'total': total,
+        }
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        # Form verilerini al
+        first_name = request.POST.get('firstName')
+        last_name = request.POST.get('lastName')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        order_note = request.POST.get('orderNote')
+        payment_method = request.POST.get('payment')
+        
+        # Yeni sipariş oluştur
+        order = Order.objects.create(
+            user=request.user,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            address=address,
+            order_note=order_note,
+            payment_method=payment_method,
         )
         
-        return Response({
-            'redirect_url': checkout_session.url
-        })
+        # Sepetteki ürünleri siparişe ekle
+        cart_items = request.user.cart.items.all()
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.product.price
+            )
         
-    except stripe.error.StripeError as e:
-        print(f"Stripe error: {str(e)}")
-        return Response({
-            'error': str(e)
-        }, status=status.HTTP_400_BAD_REQUEST)
+        # Sepeti temizle
+        request.user.cart.items.all().delete()
         
-    except Exception as e:
-        print(f"Error in stripe_payment: {str(e)}")
-        return Response({
-            'error': str(e)
-        }, status=status.HTTP_400_BAD_REQUEST)
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def paypal_payment(request):
-    print("\n=== New Request ===")
-    print(f"Request Method: {request.method}")
-    print(f"Request Path: {request.path}")
-    
-    try:
-        # Parse the request body
-        data = json.loads(request.body)
-        print("Received data:", data)
-        
-        amount = data.get('amount')
-        currency = data.get('currency', 'USD')
-        
-        if not amount:
-            return JsonResponse({
-                'error': 'Amount is required',
-                'received_data': data
-            }, status=400)
-            
-        # Initialize PayPal payment
-        payment = paypalrestsdk.Payment({
-            "intent": "sale",
-            "payer": {
-                "payment_method": "paypal"
-            },
-            "transactions": [{
-                "amount": {
-                    "total": str(amount),
-                    "currency": currency
-                },
-                "description": "Payment description"
-            }],
-            "redirect_urls": {
-                "return_url": "http://localhost:3000/success",
-                "cancel_url": "http://localhost:3000/cancel"
-            }
-        })
-
-        if payment.create():
-            # Get approval URL
-            for link in payment.links:
-                if link.method == "REDIRECT":
-                    redirect_url = link.href
-                    return JsonResponse({'redirect_url': redirect_url})
-            
-            return JsonResponse({
-                'error': 'No redirect URL found'
-            }, status=400)
-        else:
-            print("Payment creation failed:", payment.error)
-            return JsonResponse({
-                'error': 'Payment creation failed',
-                'details': payment.error
-            }, status=400)
-            
-    except json.JSONDecodeError as e:
-        print("JSON Decode Error:", str(e))
-        print("Raw request body:", request.body)
-        return JsonResponse({
-            'error': 'Invalid JSON data',
-            'details': str(e)
-        }, status=400)
-        
-    except Exception as e:
-        print("Unexpected error:", str(e))
-        print("Traceback:", traceback.format_exc())
-        return JsonResponse({
-            'error': 'Server error',
-            'details': str(e)
-        }, status=500)
+        # Ödeme sayfasına yönlendir
+        return redirect('payment_success') 

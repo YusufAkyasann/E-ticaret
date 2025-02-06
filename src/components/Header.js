@@ -1,56 +1,47 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FaUser, FaShoppingCart } from 'react-icons/fa';
 import './Header.css';
 
-const Header = ({ cartItems, onCartClick }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const Header = ({ cartItems, onCartClick, searchTerm, setSearchTerm }) => {
+  // Sepetteki toplam ürün sayısını hesapla
+  const totalItems = cartItems?.reduce((total, item) => total + (item.quantity || 0), 0) || 0;
 
-  const getActiveClass = (path) => {
-    return location.pathname === path ? 'nav-button active' : 'nav-button';
-  };
+  // Sepetteki toplam fiyatı hesapla
+  const totalPrice = cartItems?.reduce((total, item) => {
+    return total + ((item.price || 0) * (item.quantity || 0));
+  }, 0) || 0;
 
   return (
-    <div className="header-container">
+    <header className="header">
       <div className="header-content">
-        <h1 className="main-title">E-Ticaret Websitesi</h1>
-        <div className="header-actions">
-          <div className="cart-section">
-            <span>Your Cart ({cartItems?.length || 0}) - ${cartItems?.reduce((total, item) => total + item.product.price * item.quantity, 0).toFixed(2)}</span>
-            <button onClick={onCartClick}>🛍️</button>
+        <div className="header-main">
+          <div className="header-left">
+            <Link to="/" className="logo">
+              E-SHOP
+            </Link>
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="auth-section">
-            <button className="auth-button">Login / Register</button>
+          <div className="header-actions">
+            <Link to="/account" className="header-action-item">
+              <FaUser />
+              <span>Hesabım</span>
+            </Link>
+            <div className="header-action-item cart" onClick={onCartClick}>
+              <FaShoppingCart />
+              <span>Sepetim</span>
+            </div>
           </div>
         </div>
       </div>
-      <div className="nav-container">
-        <button 
-          className={getActiveClass('/')}
-          onClick={() => navigate('/')}
-        >
-          Ana Sayfa
-        </button>
-        <button 
-          className={getActiveClass('/about')}
-          onClick={() => navigate('/about')}
-        >
-          Hakkımızda
-        </button>
-        <button 
-          className={getActiveClass('/contact')}
-          onClick={() => navigate('/contact')}
-        >
-          İletişim
-        </button>
-        <button 
-          className={getActiveClass('/help')}
-          onClick={() => navigate('/help')}
-        >
-          Yardım
-        </button>
-      </div>
-    </div>
+    </header>
   );
 };
 

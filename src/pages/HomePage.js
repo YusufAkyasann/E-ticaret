@@ -7,74 +7,84 @@ import { dummyProducts } from '../DummyProducts';
 import ListofProducts from '../components/ListofProducts';
 import './HomePage.css';
 
-function HomePage({ cartItems, setCartItems }) {
+function HomePage({ cartItems, addToCart, handleQuantityChange }) {
   const navigate = useNavigate();
-  const categories = ['Electronics', 'Clothing', 'Accessories'];
-  const products = dummyProducts;
-  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Filter products based on category and search term
+  // Kategorileri ürünlere göre düzenledik
+  const categories = [
+    { id: 'all', name: 'Tüm Ürünler' },
+    { id: 'Electronics', name: 'Elektronik' }, // 4 ürün
+    { id: 'Accessories', name: 'Aksesuarlar' }, // 3 ürün
+    { id: 'Clothing', name: 'Giyim' } // 2 ürün
+  ];
+
+  // Ürünleri filtrele
+  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
+
   useEffect(() => {
-    let filtered = products;
-    if (selectedCategory) {
+    let filtered = dummyProducts;
+    
+    // Kategori filtresi - kategori adları tam eşleşmeli
+    if (selectedCategory && selectedCategory !== 'all') {
       filtered = filtered.filter(product => product.category === selectedCategory);
     }
+    
+    // Arama filtresi
     if (searchTerm) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    
     setFilteredProducts(filtered);
-  }, [selectedCategory, searchTerm, products]);
+  }, [selectedCategory, searchTerm]);
 
-  // Handle category selection
-  const handleCategorySelect = (categoryId) => {
+  const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
   };
 
-  // Handle search input change
-  const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm);
-  };
-
-  // Handle quantity change
-  const handleQuantityChange = (productId, delta) => {
-    const existingItem = cartItems.find(item => item.product.id === productId);
-    if (existingItem) {
-      const newQuantity = existingItem.quantity + delta;
-      if (newQuantity <= 0) {
-        setCartItems(cartItems.filter(item => item.product.id !== productId));
-      } else {
-        setCartItems(cartItems.map(item =>
-          item.product.id === productId ? { ...item, quantity: newQuantity } : item
-        ));
-      }
-    } else if (delta > 0) {
-      const product = products.find(p => p.id === productId);
-      setCartItems([...cartItems, { product, quantity: 1 }]);
-    }
-  };
-
-  const handleCartClick = () => {
-    navigate('/payment', { state: { cartItems } });
+  const handleAddToCart = (product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      description: product.description
+    });
   };
 
   return (
     <div>
-      <Header cartItems={cartItems} onCartClick={handleCartClick} />
+      <Header 
+        cartItems={cartItems} 
+        onCartClick={() => navigate('/payment')}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
       <div className="home-container">
-        <SearchBar onSearch={handleSearch} />
-        <CategoryButtons 
-          categories={categories} 
-          selectedCategory={selectedCategory}
-          onCategorySelect={handleCategorySelect} 
-        />
+        <div className="categories-container">
+          {categories.map(category => (
+            <button
+              key={category.id}
+              className={`category-button ${selectedCategory === category.id ? 'active' : ''}`}
+              onClick={() => handleCategoryClick(category.id)}
+            >
+              {category.name}
+              <span className="category-count">
+                {category.id === 'all' 
+                  ? dummyProducts.length 
+                  : dummyProducts.filter(p => p.category === category.id).length}
+              </span>
+            </button>
+          ))}
+        </div>
         <ListofProducts 
           products={filteredProducts} 
-          onQuantityChange={handleQuantityChange}
           cartItems={cartItems}
+          onQuantityChange={handleQuantityChange}
+          onAddToCart={handleAddToCart}
         />
       </div>
     </div>

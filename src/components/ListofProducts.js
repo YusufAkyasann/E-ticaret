@@ -2,7 +2,7 @@ import React from 'react';
 import './ProductList.css';
 import ProductCard from './ProductCard';
 
-const ListofProducts = ({ products, onQuantityChange, cartItems }) => {
+const ListofProducts = ({ products, onQuantityChange, cartItems, onAddToCart }) => {
   return (
     <div className="products-grid">
       {products.map(product => (
@@ -10,6 +10,7 @@ const ListofProducts = ({ products, onQuantityChange, cartItems }) => {
           key={product.id}
           product={product}
           onQuantityChange={onQuantityChange}
+          onAddToCart={onAddToCart}
           cartItems={cartItems}
         />
       ))}
