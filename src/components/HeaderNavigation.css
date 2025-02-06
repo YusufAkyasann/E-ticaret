@@ -1,0 +1,41 @@
+.header-navigation {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #E85D2C;
+  margin-top: -1px;
+  line-height: 0;
+  font-size: 0;
+}
+
+.nav-button {
+  background-color: #E85D2C;
+  border: none;
+  color: white;
+  height: 35px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: normal;
+}
+
+.nav-button:first-child {
+  border-left: none;
+}
+
+.nav-button:hover {
+  background-color: #D4542A;
+}
+
+@media (max-width: 768px) {
+  .header-navigation {
+    display: none;
+  }
+} 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import MobileSidebar from '../components/MobileSidebar';
+import SearchBar from '../components/SearchBar';
 import { dummyProducts } from '../DummyProducts';
 import ProductCard from '../components/ProductCard';
 import './HomePage.css';
@@ -14,6 +15,7 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Kategorileri ürünlere göre düzenledik
   const categories = [
@@ -33,16 +35,28 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
   }, [location.state, navigate]);
 
   useEffect(() => {
-    const filtered = selectedCategory === 'all'
+    let filtered = selectedCategory === 'all'
       ? dummyProducts
       : dummyProducts.filter(product => product.category === selectedCategory);
+
+    // Add search filter
+    if (searchTerm) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
     
     setFilteredProducts(filtered);
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
     setIsSidebarOpen(false);
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
 
   return (
@@ -52,13 +66,8 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
         onCartClick={() => navigate('/payment')}
         onMenuClick={() => setIsSidebarOpen(true)}
       />
-      <MobileSidebar
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        selectedCategory={selectedCategory}
-        onCategoryClick={handleCategoryClick}
-      />
       <div className="home-container">
+        <SearchBar onSearch={handleSearch} />
         <div className="categories-container desktop-only">
           {categories.map(category => (
             <button
@@ -82,6 +91,12 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
           ))}
         </div>
       </div>
+      <MobileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        selectedCategory={selectedCategory}
+        onCategoryClick={handleCategoryClick}
+      />
     </div>
   );
 }

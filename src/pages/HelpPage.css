@@ -1,0 +1,156 @@
+.help-container {
+  max-width: 1200px;
+  margin: 120px auto 40px;
+  padding: 0 20px;
+}
+
+.help-content {
+  background: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.help-layout {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.help-section {
+  margin-bottom: 20px;
+  background: #f4f4f4;
+  padding: 35px;
+  border-radius: 6px;
+}
+
+.problem-section {
+  border-left: 1px solid #e0e0e0;
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.delivery-section {
+  padding-right: 30px;
+  padding-left: 10px;
+}
+
+.help-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.help-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 25px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  width: 100%;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.problem-description {
+  min-height: 300px !important;
+}
+
+.problem-description-group {
+  margin-top: 40px;
+}
+
+.submit-button {
+  background-color: #FF6B35;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+}
+
+.submit-button:hover {
+  background-color: #ff8557;
+}
+
+@media (max-width: 768px) {
+  .help-container {
+    margin-top: 100px;
+    padding: 0 15px;
+  }
+
+  .help-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .problem-section {
+    border-left: none;
+    padding-left: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 30px;
+  }
+
+  .delivery-section {
+    padding-right: 0;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .help-content {
+    padding: 20px;
+  }
+
+  .help-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .help-section {
+    padding: 25px;
+  }
+
+  .form-row {
+    gap: 15px;
+  }
+} 

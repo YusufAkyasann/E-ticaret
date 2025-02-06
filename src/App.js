@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import PaymentPage from './pages/PaymentPage';
-import AccountPage from './pages/AccountPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import HelpPage from './pages/HelpPage';
 import { AuthProvider } from './context/AuthContext';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
@@ -45,7 +47,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={
             <HomePage 
@@ -60,13 +62,19 @@ function App() {
               handleQuantityChange={handleQuantityChange}
             />
           } />
-          <Route path="/account" element={
-            <AccountPage cartItems={cartItems} />
+          <Route path="/about" element={
+            <AboutPage cartItems={cartItems} />
+          } />
+          <Route path="/contact" element={
+            <ContactPage cartItems={cartItems} />
+          } />
+          <Route path="/help" element={
+            <HelpPage cartItems={cartItems} />
           } />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/cancel" element={<PaymentCancel />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   );
 }

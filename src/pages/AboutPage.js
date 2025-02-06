@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import MobileSidebar from '../components/MobileSidebar';
+import './AboutPage.css';
 
-function AboutPage({ cartItems, onCartClick }) {
+// Add font imports in the head of your HTML file or import in your main CSS
+// <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+function AboutPage({ cartItems }) {
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleCategoryClick = (categoryId) => {
+    navigate('/', { state: { selectedCategory: categoryId } });
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div>
-      <Header cartItems={cartItems} onCartClick={onCartClick} />
+      <Header 
+        cartItems={cartItems} 
+        onCartClick={() => navigate('/payment')}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
+      <MobileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        selectedCategory="all"
+        onCategoryClick={handleCategoryClick}
+      />
       <div className="page-container">
-        <h2>Hakkımızda</h2>
-        {/* Content will be added later */}
+        <div className="about-content">
+          <h1 className="about-title">Hakkımızda</h1>
+          <p className="about-text">
+            AI kullanımı ve websitesi geliştirme yetilerimizi geliştirmek için bu e-ticaret websitesini oluşturuyoruz.
+          </p>
+        </div>
       </div>
     </div>
   );
