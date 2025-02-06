@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import { FaCreditCard, FaMoneyBill, FaLock, FaPaypal, FaStripe } from 'react-icons/fa';
+import MobileSidebar from '../components/MobileSidebar';
+import { FaCreditCard, FaLock, FaPaypal } from 'react-icons/fa';
 import './PaymentPage.css';
 
 const PaymentPage = ({ cartItems, handleQuantityChange }) => {
@@ -17,13 +18,25 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
   });
 
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Telefon numarası için özel kontrol
+    if (name === 'phone') {
+      // Sadece rakamları al
+      const numbersOnly = value.replace(/[^0-9]/g, '');
+      setFormData(prev => ({
+        ...prev,
+        [name]: numbersOnly
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   // Toplam fiyat hesaplama
@@ -33,16 +46,28 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
     }, 0);
   };
 
+  const handleCategoryClick = (categoryId) => {
+    navigate('/', { 
+      state: { selectedCategory: categoryId },
+      replace: true 
+    });
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div>
-      <Header cartItems={cartItems} onCartClick={() => navigate('/')} />
+      <Header 
+        cartItems={cartItems} 
+        onCartClick={() => navigate('/payment')}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
+      <MobileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        selectedCategory="all"
+        onCategoryClick={handleCategoryClick}
+      />
       <div className="payment-page-container">
-        <div className="checkout-steps">
-          <div className="step active">1. Sepet</div>
-          <div className="step active">2. Teslimat</div>
-          <div className="step">3. Ödeme</div>
-        </div>
-
         <div className="payment-content">
           <div className="delivery-section">
             <h2>Teslimat Bilgileri</h2>
@@ -84,6 +109,9 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
+                  maxLength="11" // Maksimum 11 rakam (örn: 05551234567)
+                  placeholder="05551234567"
+                  pattern="[0-9]*" // Sadece rakam
                   required
                 />
               </div>

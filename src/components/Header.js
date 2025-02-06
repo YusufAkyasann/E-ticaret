@@ -8,10 +8,9 @@ const Header = ({ cartItems, onCartClick, onMenuClick }) => {
   const cartItemCount = cartItems?.length || 0;
 
   const handleLogoClick = (e) => {
-    // Mobil görünümde logo tıklamasını yakala
     if (window.innerWidth <= 768) {
       e.preventDefault();
-      onMenuClick();
+      onMenuClick?.();
     } else {
       navigate('/');
     }

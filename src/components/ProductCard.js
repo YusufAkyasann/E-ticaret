@@ -9,10 +9,6 @@ const ProductCard = ({ product, onQuantityChange, onAddToCart, cartItems }) => {
 
   const quantity = getQuantity(product.id);
 
-  const handleAddToCart = () => {
-    onAddToCart(product);
-  };
-
   return (
     <div className="product-card">
       <div className="product-image">
@@ -32,7 +28,7 @@ const ProductCard = ({ product, onQuantityChange, onAddToCart, cartItems }) => {
           ) : (
             <button 
               className="add-to-cart-button"
-              onClick={handleAddToCart}
+              onClick={() => onAddToCart(product)}
             >
               Sepete Ekle
             </button>

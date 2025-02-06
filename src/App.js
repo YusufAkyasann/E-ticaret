@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import HelpPage from './pages/HelpPage';
 import PaymentPage from './pages/PaymentPage';
+import AccountPage from './pages/AccountPage';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -17,10 +15,9 @@ function App() {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product) => {
+  const handleAddToCart = (product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
-      
       if (existingItem) {
         return prevItems.map(item =>
           item.id === product.id
@@ -28,7 +25,6 @@ function App() {
             : item
         );
       }
-      
       return [...prevItems, { ...product, quantity: 1 }];
     });
   };
@@ -52,18 +48,18 @@ function App() {
           <Route path="/" element={
             <HomePage 
               cartItems={cartItems} 
-              addToCart={addToCart}
-              handleQuantityChange={handleQuantityChange}
+              onAddToCart={handleAddToCart}
+              onQuantityChange={handleQuantityChange}
             />
           } />
-          <Route path="/about" element={<AboutPage cartItems={cartItems} />} />
-          <Route path="/contact" element={<ContactPage cartItems={cartItems} />} />
-          <Route path="/help" element={<HelpPage cartItems={cartItems} />} />
           <Route path="/payment" element={
             <PaymentPage 
               cartItems={cartItems} 
               handleQuantityChange={handleQuantityChange}
             />
+          } />
+          <Route path="/account" element={
+            <AccountPage cartItems={cartItems} />
           } />
         </Routes>
       </BrowserRouter>

@@ -253,12 +253,13 @@
   }
   
   .header-main {
-    width: 1000px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+    padding: 0 20px;
   }
   
   /* Logo */
@@ -267,15 +268,13 @@
     font-weight: 800;
     color: white;
     text-decoration: none;
-    padding-left: 20px;
   }
   
   /* Header Actions */
   .header-actions {
     display: flex;
+    align-items: center;
     gap: 30px;
-    position: absolute;
-    right: 150px;
   }
   
   .header-action-item {
@@ -334,36 +333,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-  }
-  
-  /* Adım Göstergesi */
-  .checkout-steps {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    padding: 15px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .step {
-    padding: 8px 20px;
-    color: #666;
-    position: relative;
-    font-weight: 500;
-  }
-  
-  .step:not(:last-child)::after {
-    content: "→";
-    position: absolute;
-    right: -10px;
-    color: #ddd;
-  }
-  
-  .step.active {
-    color: #FF6B35;
-    font-weight: 600;
   }
   
   /* Ana İçerik */
@@ -614,5 +583,156 @@
     font-size: 18px;
     font-weight: 600;
     color: #000;
+  }
+  
+  /* Mobil Uyumluluk */
+  @media (max-width: 1024px) {
+    .payment-page-container {
+      padding: 0 15px;
+      margin: 80px auto 30px;
+    }
+
+    .payment-content {
+      gap: 20px;
+    }
+  }
+  
+  @media (max-width: 968px) {
+    .payment-content {
+      grid-template-columns: 1fr;
+    }
+
+    .order-summary {
+      position: relative;
+      top: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .payment-methods {
+      grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+      flex-direction: column;
+    }
+
+    .cart-item img {
+      width: 100%;
+      height: 200px;
+    }
+
+    .item-price-qty {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .delivery-section,
+    .order-summary {
+      padding: 20px;
+    }
+
+    .summary-details {
+      padding: 15px;
+    }
+
+    .checkout-button {
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .header-main {
+      padding: 0 15px;
+    }
+
+    .header-actions {
+      gap: 15px;
+    }
+
+    .header-action-item:not(.cart) {
+      display: none;
+    }
+
+    .header-action-item.cart {
+      flex-direction: row;
+      font-size: 20px;
+    }
+
+    .header-action-item.cart svg {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .payment-page-container {
+      margin: 60px auto 20px;
+    }
+
+    h2 {
+      font-size: 18px !important;
+    }
+
+    .form-group label {
+      font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    .payment-method {
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    .summary-line {
+      font-size: 13px;
+    }
+
+    .summary-line.total {
+      font-size: 16px;
+    }
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 15px;
+  }
+  
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding-bottom: 15px;
+  }
+  
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
   }
   

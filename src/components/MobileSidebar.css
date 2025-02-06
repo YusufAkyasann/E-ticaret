@@ -1,0 +1,130 @@
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-sidebar.open {
+  left: 0;
+}
+
+/* Overlay ekleyelim */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-logo {
+  font-size: 24px;
+  font-weight: 800;
+  color: #FF6B35;
+  text-decoration: none;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #333;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.sidebar-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+
+.sidebar-categories {
+  padding: 20px;
+}
+
+.sidebar-categories h3 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.sidebar-category {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.sidebar-category:hover {
+  background-color: #f5f5f5;
+}
+
+.sidebar-category.active {
+  color: #FF6B35;
+  background-color: #fff5f2;
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.account-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.account-link:hover {
+  background-color: #f5f5f5;
+}
+
+.account-link svg {
+  font-size: 20px;
+  color: #FF6B35;
+} 
