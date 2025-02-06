@@ -1,43 +1,47 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaShoppingCart, FaUser, FaBars } from 'react-icons/fa';
 import './Header.css';
 
-const Header = ({ cartItems, onCartClick, searchTerm, setSearchTerm }) => {
-  // Sepetteki toplam ürün sayısını hesapla
-  const totalItems = cartItems?.reduce((total, item) => total + (item.quantity || 0), 0) || 0;
+const Header = ({ cartItems, onCartClick, onMenuClick }) => {
+  const navigate = useNavigate();
+  const cartItemCount = cartItems?.length || 0;
 
-  // Sepetteki toplam fiyatı hesapla
-  const totalPrice = cartItems?.reduce((total, item) => {
-    return total + ((item.price || 0) * (item.quantity || 0));
-  }, 0) || 0;
+  const handleLogoClick = (e) => {
+    // Mobil görünümde logo tıklamasını yakala
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      onMenuClick();
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <header className="header">
-      <div className="header-content">
-        <div className="header-main">
-          <div className="header-left">
-            <Link to="/" className="logo">
-              E-SHOP
-            </Link>
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="header-actions">
-            <Link to="/account" className="header-action-item">
-              <FaUser />
-              <span>Hesabım</span>
-            </Link>
-            <div className="header-action-item cart" onClick={onCartClick}>
-              <FaShoppingCart />
-              <span>Sepetim</span>
-            </div>
+      <div className="header-main">
+        <div className="header-left">
+          <button className="menu-button" onClick={onMenuClick}>
+            <FaBars />
+          </button>
+          <Link to="/" className="logo" onClick={handleLogoClick}>
+            E-SHOP
+          </Link>
+        </div>
+        <div className="header-actions">
+          <Link to="/account" className="header-action-item">
+            <FaUser />
+            <span>Hesabım</span>
+          </Link>
+          <div 
+            onClick={onCartClick} 
+            className="header-action-item cart" 
+            style={{cursor: 'pointer'}}
+          >
+            <FaShoppingCart />
+            {cartItemCount > 0 && (
+              <span className="cart-badge">{cartItemCount}</span>
+            )}
           </div>
         </div>
       </div>

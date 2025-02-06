@@ -1,58 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
-import CategoryButtons from '../components/CategoryButtons';
-import SearchBar from '../components/SearchBar';
+import MobileSidebar from '../components/MobileSidebar';
 import { dummyProducts } from '../DummyProducts';
-import ListofProducts from '../components/ListofProducts';
+import ProductCard from '../components/ProductCard';
 import './HomePage.css';
 
-function HomePage({ cartItems, addToCart, handleQuantityChange }) {
+function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const location = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState(
+    location.state?.selectedCategory || 'all'
+  );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
 
   // Kategorileri ürünlere göre düzenledik
   const categories = [
     { id: 'all', name: 'Tüm Ürünler' },
-    { id: 'Electronics', name: 'Elektronik' }, // 4 ürün
-    { id: 'Accessories', name: 'Aksesuarlar' }, // 3 ürün
-    { id: 'Clothing', name: 'Giyim' } // 2 ürün
+    { id: 'Electronics', name: 'Elektronik' },
+    { id: 'Accessories', name: 'Aksesuarlar' },
+    { id: 'Clothing', name: 'Giyim' }
   ];
 
-  // Ürünleri filtrele
-  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
+  useEffect(() => {
+    // Location state'den gelen kategoriyi kontrol et
+    if (location.state?.selectedCategory) {
+      setSelectedCategory(location.state.selectedCategory);
+      // State'i temizle
+      navigate('/', { replace: true, state: {} });
+    }
+  }, [location.state, navigate]);
 
   useEffect(() => {
-    let filtered = dummyProducts;
-    
-    // Kategori filtresi - kategori adları tam eşleşmeli
-    if (selectedCategory && selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category === selectedCategory);
-    }
-    
-    // Arama filtresi
-    if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+    const filtered = selectedCategory === 'all'
+      ? dummyProducts
+      : dummyProducts.filter(product => product.category === selectedCategory);
     
     setFilteredProducts(filtered);
-  }, [selectedCategory, searchTerm]);
+  }, [selectedCategory]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(categoryId);
-  };
-
-  const handleAddToCart = (product) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      description: product.description
-    });
+    setIsSidebarOpen(false);
   };
 
   return (
@@ -60,11 +50,16 @@ function HomePage({ cartItems, addToCart, handleQuantityChange }) {
       <Header 
         cartItems={cartItems} 
         onCartClick={() => navigate('/payment')}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+        onMenuClick={() => setIsSidebarOpen(true)}
+      />
+      <MobileSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        selectedCategory={selectedCategory}
+        onCategoryClick={handleCategoryClick}
       />
       <div className="home-container">
-        <div className="categories-container">
+        <div className="categories-container desktop-only">
           {categories.map(category => (
             <button
               key={category.id}
@@ -72,20 +67,20 @@ function HomePage({ cartItems, addToCart, handleQuantityChange }) {
               onClick={() => handleCategoryClick(category.id)}
             >
               {category.name}
-              <span className="category-count">
-                {category.id === 'all' 
-                  ? dummyProducts.length 
-                  : dummyProducts.filter(p => p.category === category.id).length}
-              </span>
             </button>
           ))}
         </div>
-        <ListofProducts 
-          products={filteredProducts} 
-          cartItems={cartItems}
-          onQuantityChange={handleQuantityChange}
-          onAddToCart={handleAddToCart}
-        />
+        <div className="products-grid">
+          {filteredProducts.map(product => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              cartItems={cartItems}
+              onAddToCart={onAddToCart}
+              onQuantityChange={onQuantityChange}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
