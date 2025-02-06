@@ -4,6 +4,8 @@ import HomePage from './pages/HomePage';
 import PaymentPage from './pages/PaymentPage';
 import AccountPage from './pages/AccountPage';
 import { AuthProvider } from './context/AuthContext';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 
 function App() {
   const [cartItems, setCartItems] = useState(() => {
@@ -61,6 +63,8 @@ function App() {
           <Route path="/account" element={
             <AccountPage cartItems={cartItems} />
           } />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/cancel" element={<PaymentCancel />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

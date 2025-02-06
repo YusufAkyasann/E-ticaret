@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import MobileSidebar from '../components/MobileSidebar';
 import { FaCreditCard, FaLock, FaPaypal } from 'react-icons/fa';
+import PaymentButtons from '../components/PaymentButtons';
 import './PaymentPage.css';
 
 const PaymentPage = ({ cartItems, handleQuantityChange }) => {
@@ -41,9 +42,13 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
 
   // Toplam fiyat hesaplama
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      return total + (item.price * item.quantity);
+    const total = cartItems.reduce((total, item) => {
+        const itemPrice = parseFloat(item.price) || 0;
+        const quantity = parseInt(item.quantity) || 0;
+        return total + (itemPrice * quantity);
     }, 0);
+    
+    return total.toFixed(2);
   };
 
   const handleCategoryClick = (categoryId) => {
@@ -168,30 +173,10 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
               ))}
             </div>
 
-            <div className="payment-methods-section">
-              <h4>Ödeme Yöntemi</h4>
-              <div className="payment-methods">
-                <div 
-                  className={`payment-method ${paymentMethod === 'stripe' ? 'active' : ''}`}
-                  onClick={() => setPaymentMethod('stripe')}
-                >
-                  <FaCreditCard />
-                  <span>Stripe ile Öde</span>
-                </div>
-                <div 
-                  className={`payment-method ${paymentMethod === 'paypal' ? 'active' : ''}`}
-                  onClick={() => setPaymentMethod('paypal')}
-                >
-                  <FaPaypal />
-                  <span>PayPal ile Öde</span>
-                </div>
-              </div>
-            </div>
-
             <div className="summary-details">
               <div className="summary-line">
                 <span>Ara Toplam</span>
-                <span>₺{calculateTotal().toFixed(2)}</span>
+                <span>₺{calculateTotal()}</span>
               </div>
               <div className="summary-line">
                 <span>Kargo</span>
@@ -199,16 +184,10 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
               </div>
               <div className="summary-line total">
                 <span>Toplam</span>
-                <span>₺{calculateTotal().toFixed(2)}</span>
+                <span>₺{calculateTotal()}</span>
               </div>
 
-              <button 
-                className="checkout-button"
-                onClick={() => navigate('/checkout')}
-                disabled={cartItems.length === 0 || !paymentMethod}
-              >
-                <FaLock /> Güvenli Ödeme
-              </button>
+              <PaymentButtons totalAmount={calculateTotal()} />
               <div className="secure-payment">
                 <FaLock />
                 <p>256-bit SSL güvenli ödeme</p>
