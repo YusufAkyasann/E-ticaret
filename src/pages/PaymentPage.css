@@ -296,183 +296,323 @@
     opacity: 0.8;
   }
   
-  /* Payment Page Ana Yapı */
-  .payment-page {
+  /* Ana Container */
+  .payment-page-container {
+    max-width: 1200px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+  }
+  
+  /* İki Sütunlu Yapı */
+  .payment-content {
+    display: grid;
+    grid-template-columns: 1fr 400px; /* Sol taraf esnek, sağ taraf 400px sabit */
+    gap: 30px;
+  }
+  
+  /* Sol Taraf - Teslimat Bilgileri */
+  .delivery-section {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Sağ Taraf - Sipariş Özeti */
+  .order-summary {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+  }
+  
+  /* Form Grid */
+  .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px;
-    max-width: 1000px;
-    margin: 90px auto 0;
-    background-color: #f8f8f8;
-    border-radius: 8px;
   }
   
-  /* Teslimat Bilgileri ve Sipariş Özeti */
-  .delivery-info, .order-summary {
+  /* Adım Göstergesi */
+  .checkout-steps {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 15px;
     background: white;
-    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
-  /* Form Grupları */
+  .step {
+    padding: 8px 20px;
+    color: #666;
+    position: relative;
+    font-weight: 500;
+  }
+  
+  .step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -10px;
+    color: #ddd;
+  }
+  
+  .step.active {
+    color: #FF6B35;
+    font-weight: 600;
+  }
+  
+  /* Ana İçerik */
+  .payment-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 30px;
+  }
+  
+  /* Sipariş Özeti */
+  .cart-review {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .cart-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 20px 0;
+  }
+  
+  .cart-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .cart-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .item-details {
+    flex: 1;
+  }
+  
+  .item-price-qty {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Teslimat Formu */
+  .delivery-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
   .form-group {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-group.full-width {
+    grid-column: 1 / -1;
   }
   
   .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #666;
     font-size: 14px;
+    color: #000;
     font-weight: 500;
   }
   
   .form-group input,
   .form-group textarea {
-    width: 100%;
-    padding: 8px 12px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
   }
   
   .form-group textarea {
-    min-height: 80px;
+    min-height: 100px;
+    resize: vertical;
   }
   
-  /* Başlıklar */
-  .section-title {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
+  /* Ödeme Bölümü */
+  .payment-methods-section {
+    margin-bottom: 30px;
   }
   
-  /* Ürün Listesi */
-  .product-list {
-    margin-bottom: 15px;
-  }
-  
-  .product-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .product-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .product-image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  .product-details {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  
-  .product-name {
-    font-weight: 500;
-  }
-  
-  .product-quantity {
-    color: #666;
-    font-size: 13px;
-  }
-  
-  .product-price {
-    font-weight: 500;
-  }
-  
-  /* Ödeme Yöntemleri */
   .payment-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .payment-method {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .payment-method:hover,
+  .payment-method.active {
+    border-color: #FF6B35;
+    background-color: #fff5f2;
+  }
+  
+  /* Toplam ve Ödeme Butonu */
+  .summary-details {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
     margin-top: 20px;
   }
   
-  .payment-method-item {
-    padding: 15px;
+  .summary-line {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    justify-content: space-between;
     margin-bottom: 10px;
+    color: #666;
   }
   
-  .payment-icon {
-    font-size: 24px;
+  .summary-line.total {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
   }
   
-  .payment-method-item.selected .payment-icon {
-    color: #FF6B35;
-  }
-  
-  /* Stripe ve PayPal ikonları için özel stiller */
-  #stripe + .payment-icon {
-    color: #6772e5;
-  }
-  
-  #paypal + .payment-icon {
-    color: #003087;
-  }
-  
-  /* Sipariş Tamamla Butonu */
-  .submit-button {
+  .checkout-button {
     width: 100%;
-    padding: 12px;
-    background-color: #FF6B35;
+    padding: 15px;
+    background: #FF6B35;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
   }
   
-  .submit-button:hover {
-    background-color: #FF8557;
+  .checkout-button:hover {
+    background: #ff8557;
   }
   
-  /* Responsive */
-  @media screen and (max-width: 1100px) {
-    .header-main {
-      width: 100%;
-      padding: 0 20px;
-    }
-    
-    .header-actions {
-      right: 100px;
-    }
-    
-    .payment-page {
-      margin: 90px 20px 0;
-    }
+  .checkout-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
   }
   
-  @media screen and (max-width: 768px) {
-    .payment-page {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  /* Boş sepet mesajı */
-  .empty-cart {
+  .secure-payment {
     text-align: center;
-    padding: 20px;
+    margin-top: 15px;
     color: #666;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .secure-payment svg {
+    color: #28a745;
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 968px) {
+    .payment-content {
+      grid-template-columns: 1fr; /* Mobilde tek sütun */
+    }
+
+    .order-summary {
+      position: relative;
+      top: 0;
+    }
+  }
+  
+  /* Başlık Stilleri - Tüm ana başlıklar için */
+  .cart-review h2,
+  .delivery-section h2,
+  .payment-methods-section h4,
+  .order-summary h2 {  /* Sipariş özeti başlığı eklendi */
+    color: #000;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  /* Sipariş özeti içindeki başlıklar */
+  .cart-review h2 {
+    color: #000 !important; /* Özellikle sipariş özeti başlığı için */
+  }
+  
+  /* Ürün isimleri */
+  .item-details h3 {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  /* Fiyat ve miktar bilgileri */
+  .item-price-qty {
+    color: #000;
+  }
+  
+  .price {
+    font-weight: 600;
+    color: #000;
+  }
+  
+  /* Alt başlıklar için */
+  .summary-details h3 {
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  /* Ödeme yöntemi başlığı */
+  .payment-methods-section h4 {
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  /* Sipariş özeti başlığı */
+  .summary-details .summary-line {
+    color: #000;
+  }
+  
+  /* Toplam fiyat */
+  .summary-line.total {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
   }
   
