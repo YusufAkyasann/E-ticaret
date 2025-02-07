@@ -1,31 +1,16 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './HeaderNavigation.css';
 
 const HeaderNavigation = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="header-navigation">
-      <button 
-        className="nav-button"
-        onClick={() => navigate('/about')}
-      >
-        Hakkımızda
-      </button>
-      <button 
-        className="nav-button"
-        onClick={() => navigate('/contact')}
-      >
-        İletişim
-      </button>
-      <button 
-        className="nav-button"
-        onClick={() => navigate('/help')}
-      >
-        Yardım
-      </button>
-    </div>
+    <nav className="header-navigation">
+      <div className="nav-container">
+        <Link to="/about" className="nav-link">Hakkımızda</Link>
+        <Link to="/contact" className="nav-link">İletişim</Link>
+        <Link to="/help" className="nav-link">Yardım</Link>
+      </div>
+    </nav>
   );
 };
 

@@ -1,38 +1,78 @@
 .search-bar-container {
   width: 100%;
   padding: 15px 20px;
-  background-color: white;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-input-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: #999;
+  font-size: 16px;
 }
 
 .search-input {
   width: 100%;
-  max-width: none;
-  margin: 0 auto;
-  display: block;
-  padding: 12px 20px;
-  border: 2px solid #FF6B35;
-  border-radius: 25px;
-  font-size: 16px;
+  padding: 12px 15px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
 }
 
 .search-input:focus {
-  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
 }
 
 .search-input::placeholder {
   color: #999;
 }
 
+/* Tablet */
 @media (max-width: 768px) {
   .search-bar-container {
-    padding: 15px 10px;
+    padding: 12px 15px;
+    position: sticky;
+    top: 63px; /* Header yüksekliği + padding */
+    z-index: 999;
   }
-  
+
   .search-input {
-    width: 100%;
+    padding: 10px 15px 10px 40px;
+    font-size: 14px;
+  }
+
+  .search-icon {
+    font-size: 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .search-bar-container {
+    padding: 10px;
+    top: 57px; /* Daha küçük header için */
+  }
+
+  .search-input {
+    padding: 8px 15px 8px 35px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .search-icon {
+    left: 12px;
+    font-size: 13px;
   }
 } 

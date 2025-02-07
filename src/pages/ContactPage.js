@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import MobileSidebar from '../components/MobileSidebar';
+import './ContactPage.css';
 
-function ContactPage({ cartItems }) {
+const ContactPage = ({ cartItems }) => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleCategoryClick = (categoryId) => {
-    navigate('/', { state: { selectedCategory: categoryId } });
+    navigate('/', { 
+      state: { selectedCategory: categoryId },
+      replace: true 
+    });
     setIsSidebarOpen(false);
   };
 
@@ -25,12 +29,12 @@ function ContactPage({ cartItems }) {
         selectedCategory="all"
         onCategoryClick={handleCategoryClick}
       />
-      <div className="page-container">
-        <h2>İletişim</h2>
-        {/* Content will be added later */}
+      <div className="contact-container">
+        <h1>İletişim</h1>
+        {/* İletişim sayfası içeriği */}
       </div>
     </div>
   );
-}
+};
 
 export default ContactPage; 

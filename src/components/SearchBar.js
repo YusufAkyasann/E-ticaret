@@ -1,15 +1,23 @@
 import React from 'react';
+import { FaSearch } from 'react-icons/fa';
 import './SearchBar.css';
 
 const SearchBar = ({ onSearch }) => {
+  const handleChange = (e) => {
+    onSearch(e.target.value);
+  };
+
   return (
     <div className="search-bar-container">
-      <input
-        type="text"
-        placeholder="Ürün ara..."
-        onChange={(e) => onSearch(e.target.value)}
-        className="search-input"
-      />
+      <div className="search-input-wrapper">
+        <FaSearch className="search-icon" />
+        <input
+          type="text"
+          placeholder="Ürün ara..."
+          onChange={handleChange}
+          className="search-input"
+        />
+      </div>
     </div>
   );
 };

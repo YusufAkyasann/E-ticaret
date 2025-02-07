@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import MobileSidebar from '../components/MobileSidebar';
 import './HelpPage.css';
 
-function HelpPage({ cartItems }) {
+const HelpPage = ({ cartItems }) => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,6 +41,14 @@ function HelpPage({ cartItems }) {
     'Diğer'
   ];
 
+  const handleCategoryClick = (categoryId) => {
+    navigate('/', { 
+      state: { selectedCategory: categoryId },
+      replace: true 
+    });
+    setIsSidebarOpen(false);
+  };
+
   const headerProps = {
     cartItems: cartItems,
     onCartClick: () => navigate('/payment'),
@@ -51,7 +59,7 @@ function HelpPage({ cartItems }) {
     isOpen: isSidebarOpen,
     onClose: () => setIsSidebarOpen(false),
     selectedCategory: 'all',
-    onCategoryClick: () => {}
+    onCategoryClick: handleCategoryClick
   };
 
   return (
@@ -181,6 +189,6 @@ function HelpPage({ cartItems }) {
       </div>
     </div>
   );
-}
+};
 
 export default HelpPage; 
