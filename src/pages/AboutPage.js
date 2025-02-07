@@ -33,7 +33,7 @@ function AboutPage({ cartItems }) {
         <div className="about-content">
           <h1 className="about-title">Hakkımızda</h1>
           <p className="about-text">
-            AI kullanımı ve websitesi geliştirme yetilerimizi geliştirmek için bu e-ticaret websitesini oluşturuyoruz.
+            AI kullanımı ve websitesi geliştirme yetilerimizi geliştirmek amacıyla bu e-ticaret websitesini oluşturan, Finnovation'da çalışan üniversite öğrencileriyiz.
           </p>
         </div>
       </div>
