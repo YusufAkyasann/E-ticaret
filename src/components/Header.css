@@ -202,6 +202,28 @@
   .mobile-only {
     display: block;
   }
+
+  .auth-buttons,
+  .user-menu {
+    display: none !important;
+  }
+
+  .login-container .auth-buttons,
+  .signup-container .auth-buttons,
+  .payment-container .auth-buttons,
+  .account-container .auth-buttons,
+  .about-container .auth-buttons,
+  .contact-container .auth-buttons,
+  .help-container .auth-buttons,
+  .login-container .user-menu,
+  .signup-container .user-menu,
+  .payment-container .user-menu,
+  .account-container .user-menu,
+  .about-container .user-menu,
+  .contact-container .user-menu,
+  .help-container .user-menu {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -238,4 +260,115 @@
 
 .mobile-only {
   display: none;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.auth-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.auth-button.login {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.auth-button.login:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.auth-button.signup {
+  background-color: white;
+  color: #FF6B35;
+}
+
+.auth-button.signup:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .auth-buttons {
+    margin-right: 15px;
+  }
+
+  .auth-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-buttons {
+    margin-right: 10px;
+  }
+
+  .auth-button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.user-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .user-menu {
+    margin-right: 15px;
+  }
+
+  .user-name {
+    display: none;
+  }
 } 

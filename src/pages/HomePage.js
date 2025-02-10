@@ -7,7 +7,7 @@ import { dummyProducts } from '../DummyProducts';
 import ProductCard from '../components/ProductCard';
 import './HomePage.css';
 
-function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
+function HomePage({ cartItems, onAddToCart, onQuantityChange, isAuthenticated, user, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState(
@@ -65,6 +65,9 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
         cartItems={cartItems} 
         onCartClick={() => navigate('/payment')}
         onMenuClick={() => setIsSidebarOpen(true)}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        onLogout={onLogout}
       />
       <div className="home-container">
         <SearchBar onSearch={handleSearch} />
@@ -96,6 +99,9 @@ function HomePage({ cartItems, onAddToCart, onQuantityChange }) {
         onClose={() => setIsSidebarOpen(false)}
         selectedCategory={selectedCategory}
         onCategoryClick={handleCategoryClick}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        onLogout={onLogout}
       />
     </div>
   );

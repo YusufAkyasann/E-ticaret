@@ -108,6 +108,12 @@
   margin-top: auto;
 }
 
+.account-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .account-link {
   display: flex;
   align-items: center;
@@ -127,4 +133,25 @@
 .account-link svg {
   font-size: 20px;
   color: #FF6B35;
+}
+
+.sidebar-logout-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #FF6B35;
+  border-radius: 8px;
+  background: none;
+  color: #FF6B35;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sidebar-logout-button:hover {
+  background-color: #FF6B35;
+  color: white;
+}
+
+.auth-section {
+  width: 100%;
 } 

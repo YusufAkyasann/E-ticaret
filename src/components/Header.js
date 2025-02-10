@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaBars } from 'react-icons/fa';
+import { FaShoppingCart, FaBars, FaUser } from 'react-icons/fa';
 import HeaderNavigation from './HeaderNavigation';
 import './Header.css';
 
-const Header = ({ cartItems, onCartClick, onMenuClick }) => {
+const Header = ({ cartItems, onCartClick, onMenuClick, isAuthenticated, user, onLogout }) => {
   const navigate = useNavigate();
   const cartItemCount = cartItems?.length || 0;
 
@@ -15,6 +15,11 @@ const Header = ({ cartItems, onCartClick, onMenuClick }) => {
     } else {
       navigate('/');
     }
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    navigate('/');  // Ana sayfaya yönlendir
   };
 
   return (
@@ -30,10 +35,43 @@ const Header = ({ cartItems, onCartClick, onMenuClick }) => {
             </Link>
           </div>
           <div className="header-actions">
+            {isAuthenticated ? (
+              <div className="user-menu">
+                <button 
+                  className="user-button"
+                  onClick={() => navigate('/account')}
+                >
+                  <FaUser />
+                  <span className="user-name">
+                    {user?.name || 'Hesabım'}
+                  </span>
+                </button>
+                <button 
+                  className="logout-button"
+                  onClick={handleLogout}
+                >
+                  Çıkış Yap
+                </button>
+              </div>
+            ) : (
+              <div className="auth-buttons">
+                <button 
+                  className="auth-button login"
+                  onClick={() => navigate('/login')}
+                >
+                  Giriş Yap
+                </button>
+                <button 
+                  className="auth-button signup"
+                  onClick={() => navigate('/signup')}
+                >
+                  Üye Ol
+                </button>
+              </div>
+            )}
             <div 
               onClick={onCartClick} 
-              className="header-action-item cart" 
-              style={{cursor: 'pointer'}}
+              className="header-action-item cart"
             >
               <FaShoppingCart />
               {cartItemCount > 0 && (

@@ -1,9 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import './MobileSidebar.css';
 
-const MobileSidebar = ({ isOpen, onClose, selectedCategory, onCategoryClick }) => {
+const MobileSidebar = ({ 
+  isOpen, 
+  onClose, 
+  selectedCategory, 
+  onCategoryClick,
+  isAuthenticated,
+  user,
+  onLogout
+}) => {
+  const navigate = useNavigate();
+
   const categories = [
     { id: 'all', name: 'Tüm Ürünler' },
     { id: 'Electronics', name: 'Elektronik' },
@@ -11,9 +21,18 @@ const MobileSidebar = ({ isOpen, onClose, selectedCategory, onCategoryClick }) =
     { id: 'Clothing', name: 'Giyim' }
   ];
 
-  const handleCategorySelect = (categoryId) => {
+  const handleCategoryClick = (categoryId) => {
     onCategoryClick(categoryId);
     onClose();
+    navigate('/', { 
+      state: { selectedCategory: categoryId }
+    });
+  };
+
+  const handleLogout = () => {
+    onLogout();
+    onClose();
+    navigate('/');
   };
 
   return (
@@ -31,17 +50,34 @@ const MobileSidebar = ({ isOpen, onClose, selectedCategory, onCategoryClick }) =
               <button
                 key={category.id}
                 className={`sidebar-category ${selectedCategory === category.id ? 'active' : ''}`}
-                onClick={() => handleCategorySelect(category.id)}
+                onClick={() => handleCategoryClick(category.id)}
               >
                 {category.name}
               </button>
             ))}
           </div>
           <div className="sidebar-footer">
-            <Link to="/account" className="account-link" onClick={onClose}>
-              <FaUser />
-              <span>Hesabım</span>
-            </Link>
+            {isAuthenticated ? (
+              <div className="account-section">
+                <Link to="/account" className="account-link" onClick={onClose}>
+                  <FaUser />
+                  <span>{user?.name || 'Hesabım'}</span>
+                </Link>
+                <button 
+                  className="sidebar-logout-button" 
+                  onClick={handleLogout}
+                >
+                  Çıkış Yap
+                </button>
+              </div>
+            ) : (
+              <div className="auth-section">
+                <Link to="/login" className="account-link" onClick={onClose}>
+                  <FaUser />
+                  <span>Giriş Yap / Üye Ol</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

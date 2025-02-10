@@ -7,6 +7,9 @@ import ContactPage from './pages/ContactPage';
 import HelpPage from './pages/HelpPage';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
+import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
+import AccountPage from './pages/AccountPage';
 
 function App() {
   const [cartItems, setCartItems] = useState(() => {
@@ -14,9 +17,21 @@ function App() {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Sayfa yüklendiğinde localStorage'dan kullanıcı verilerini al
+  useEffect(() => {
+    const savedUserData = localStorage.getItem('userData');
+    if (savedUserData) {
+      const userData = JSON.parse(savedUserData);
+      setUser(userData);
+    }
+  }, []);
 
   const handleAddToCart = (product) => {
     setCartItems(prevItems => {
@@ -44,6 +59,41 @@ function App() {
     });
   };
 
+  const handleLogin = (loginData) => {
+    // localStorage'dan kayıtlı kullanıcı verilerini al
+    const savedUserData = localStorage.getItem('userData');
+    if (savedUserData) {
+      const userData = JSON.parse(savedUserData);
+      // Login formundan gelen email ile kayıtlı email eşleşiyorsa
+      if (userData.email === loginData.email) {
+        setIsAuthenticated(true);
+        setUser(userData);
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    // Ana sayfaya yönlendir
+    window.location.href = '/';  // Tam sayfa yenileme için
+    // Alternatif olarak: navigate('/'); kullanılabilir
+  };
+
+  const handleUpdateUser = async (userData) => {
+    try {
+      // Backend'e güncelleme isteği atılacak
+      // await updateUser(userData);
+      
+      // localStorage'daki kullanıcı verilerini güncelle
+      localStorage.setItem('userData', JSON.stringify(userData));
+      setUser(userData);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   return (
     <Router>
       <Routes>
@@ -52,12 +102,17 @@ function App() {
             cartItems={cartItems} 
             onAddToCart={handleAddToCart}
             onQuantityChange={handleQuantityChange}
+            isAuthenticated={isAuthenticated}
+            user={user}
+            onLogout={handleLogout}
           />
         } />
         <Route path="/payment" element={
           <PaymentPage 
             cartItems={cartItems} 
             handleQuantityChange={handleQuantityChange}
+            isAuthenticated={isAuthenticated}
+            user={user}
           />
         } />
         <Route path="/about" element={
@@ -71,6 +126,23 @@ function App() {
         } />
         <Route path="/payment/success" element={<PaymentSuccess />} />
         <Route path="/payment/cancel" element={<PaymentCancel />} />
+        <Route path="/signup" element={
+          <SignupPage cartItems={cartItems} />
+        } />
+        <Route path="/login" element={
+          <LoginPage 
+            cartItems={cartItems}
+            onLogin={handleLogin}
+          />
+        } />
+        <Route path="/account" element={
+          <AccountPage 
+            cartItems={cartItems}
+            user={user}
+            onUpdateUser={handleUpdateUser}
+            onLogout={handleLogout}
+          />
+        } />
       </Routes>
     </Router>
   );

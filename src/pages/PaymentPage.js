@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import MobileSidebar from '../components/MobileSidebar';
@@ -6,7 +6,7 @@ import { FaCreditCard, FaLock, FaPaypal } from 'react-icons/fa';
 import PaymentButtons from '../components/PaymentButtons';
 import './PaymentPage.css';
 
-const PaymentPage = ({ cartItems, handleQuantityChange }) => {
+const PaymentPage = ({ cartItems, handleQuantityChange, isAuthenticated, user, onLogout }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -18,34 +18,51 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
     postalCode: '',
   });
 
+  // Kullanıcı bilgilerini form'a doldurma
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // console.log("Gelen user verisi:", user); // Debug için
+      setFormData(prevData => ({
+        ...prevData,
+        firstName: user.name || '',           // name -> firstName eşleşmesi
+        lastName: user.surname || '',         // surname -> lastName eşleşmesi
+        email: user.email || '',
+        phone: user.phone || '',
+        address: user.address || '',
+        city: user.city || '',
+        postalCode: user.postalCode || ''
+      }));
+    }
+  }, [isAuthenticated, user]);
+
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // Giriş yapmamış kullanıcılar için form değişikliklerini izleme
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    
-    // Telefon numarası için özel kontrol
-    if (name === 'phone') {
-      // Sadece rakamları al
-      const numbersOnly = value.replace(/[^0-9]/g, '');
-      setFormData(prev => ({
-        ...prev,
-        [name]: numbersOnly
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+    if (!isAuthenticated) {  // Sadece giriş yapmamış kullanıcılar için form değişikliğine izin ver
+      const { name, value } = e.target;
+      if (name === 'phone') {
+        const numbersOnly = value.replace(/[^0-9]/g, '');
+        setFormData(prev => ({
+          ...prev,
+          [name]: numbersOnly
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          [name]: value
+        }));
+      }
     }
   };
 
   // Toplam fiyat hesaplama
   const calculateTotal = () => {
     const total = cartItems.reduce((total, item) => {
-        const itemPrice = parseFloat(item.price) || 0;
-        const quantity = parseInt(item.quantity) || 0;
-        return total + (itemPrice * quantity);
+      const itemPrice = parseFloat(item.price) || 0;
+      const quantity = parseInt(item.quantity) || 0;
+      return total + (itemPrice * quantity);
     }, 0);
     
     return total.toFixed(2);
@@ -65,12 +82,17 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
         cartItems={cartItems} 
         onCartClick={() => navigate('/payment')}
         onMenuClick={() => setIsSidebarOpen(true)}
+        isAuthenticated={isAuthenticated}
+        user={user}
       />
       <MobileSidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         selectedCategory="all"
-        onCategoryClick={handleCategoryClick}
+        onCategoryClick={(categoryId) => navigate('/', { state: { selectedCategory: categoryId } })}
+        isAuthenticated={isAuthenticated}
+        user={user}
+        onLogout={onLogout}
       />
       <div className="payment-page-container">
         <div className="payment-content">
@@ -85,6 +107,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group">
@@ -95,6 +118,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group">
@@ -105,6 +129,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group">
@@ -114,10 +139,11 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  maxLength="11" // Maksimum 11 rakam (örn: 05551234567)
+                  maxLength="11"
                   placeholder="05551234567"
-                  pattern="[0-9]*" // Sadece rakam
+                  pattern="[0-9]*"
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group full-width">
@@ -127,6 +153,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.address}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group">
@@ -137,6 +164,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.city}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
               <div className="form-group">
@@ -147,6 +175,7 @@ const PaymentPage = ({ cartItems, handleQuantityChange }) => {
                   value={formData.postalCode}
                   onChange={handleInputChange}
                   required
+                  readOnly={isAuthenticated}
                 />
               </div>
             </div>
