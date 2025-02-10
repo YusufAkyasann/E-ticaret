@@ -5,7 +5,6 @@ import PaymentPage from './pages/PaymentPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import HelpPage from './pages/HelpPage';
-import { AuthProvider } from './context/AuthContext';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
 
@@ -46,36 +45,34 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={
-            <HomePage 
-              cartItems={cartItems} 
-              onAddToCart={handleAddToCart}
-              onQuantityChange={handleQuantityChange}
-            />
-          } />
-          <Route path="/payment" element={
-            <PaymentPage 
-              cartItems={cartItems} 
-              handleQuantityChange={handleQuantityChange}
-            />
-          } />
-          <Route path="/about" element={
-            <AboutPage cartItems={cartItems} />
-          } />
-          <Route path="/contact" element={
-            <ContactPage cartItems={cartItems} />
-          } />
-          <Route path="/help" element={
-            <HelpPage cartItems={cartItems} />
-          } />
-          <Route path="/payment/success" element={<PaymentSuccess />} />
-          <Route path="/payment/cancel" element={<PaymentCancel />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <HomePage 
+            cartItems={cartItems} 
+            onAddToCart={handleAddToCart}
+            onQuantityChange={handleQuantityChange}
+          />
+        } />
+        <Route path="/payment" element={
+          <PaymentPage 
+            cartItems={cartItems} 
+            handleQuantityChange={handleQuantityChange}
+          />
+        } />
+        <Route path="/about" element={
+          <AboutPage cartItems={cartItems} />
+        } />
+        <Route path="/contact" element={
+          <ContactPage cartItems={cartItems} />
+        } />
+        <Route path="/help" element={
+          <HelpPage cartItems={cartItems} />
+        } />
+        <Route path="/payment/success" element={<PaymentSuccess />} />
+        <Route path="/payment/cancel" element={<PaymentCancel />} />
+      </Routes>
+    </Router>
   );
 }
 

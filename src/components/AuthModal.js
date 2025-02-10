@@ -1,56 +1,112 @@
 import React, { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import './AuthModal.css';
 
-const AuthModal = ({ onClose, onLogin, onRegister }) => {
+const AuthModal = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    name: ''
+    name: '',
+    phone: '',
+    address: '',
+    city: '',
+    district: ''
   });
+  const { login, register } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      onLogin(formData);
+      // In a real app, you'd validate credentials here
+      login(formData);
     } else {
-      onRegister(formData);
+      register(formData);
     }
+    onClose();
+  };
+
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
   return (
     <div className="auth-modal-overlay">
       <div className="auth-modal">
         <button className="close-button" onClick={onClose}>×</button>
-        <h2>{isLogin ? 'Login' : 'Register'}</h2>
+        <h2>{isLogin ? 'Giriş Yap' : 'Kayıt Ol'}</h2>
         <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <input
-              type="text"
-              placeholder="Name"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-            />
-          )}
           <input
             type="email"
+            name="email"
             placeholder="Email"
             value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            onChange={handleChange}
+            required
           />
           <input
             type="password"
-            placeholder="Password"
+            name="password"
+            placeholder="Şifre"
             value={formData.password}
-            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            onChange={handleChange}
+            required
           />
-          <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+          {!isLogin && (
+            <>
+              <input
+                type="text"
+                name="name"
+                placeholder="Ad Soyad"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Telefon"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="city"
+                placeholder="İl"
+                value={formData.city}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="district"
+                placeholder="İlçe"
+                value={formData.district}
+                onChange={handleChange}
+                required
+              />
+              <textarea
+                name="address"
+                placeholder="Adres"
+                value={formData.address}
+                onChange={handleChange}
+                required
+              />
+            </>
+          )}
+          <button type="submit">
+            {isLogin ? 'Giriş Yap' : 'Kayıt Ol'}
+          </button>
         </form>
         <button 
           className="switch-auth-mode" 
           onClick={() => setIsLogin(!isLogin)}
         >
-          {isLogin ? 'Need an account? Register' : 'Have an account? Login'}
+          {isLogin ? 'Hesabınız yok mu? Kayıt olun' : 'Zaten üye misiniz? Giriş yapın'}
         </button>
       </div>
     </div>

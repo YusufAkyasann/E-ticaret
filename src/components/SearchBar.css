@@ -3,6 +3,7 @@
   padding: 15px 20px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-sizing: border-box;
 }
 
 .search-input-wrapper {
@@ -11,6 +12,8 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .search-icon {
@@ -69,6 +72,8 @@
     padding: 8px 15px 8px 35px;
     font-size: 13px;
     border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .search-icon {
